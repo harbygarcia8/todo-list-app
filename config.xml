@@ -47,6 +47,10 @@
     <platform name="ios">
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
+        <!-- Xcode 26 exige un deployment target moderno (macCatalyst >= 13). -->
+        <preference name="deployment-target" value="13.0" />
+        <hook type="after_prepare" src="hooks/fix-ios-deployment-target.js" />
+        <hook type="after_platform_add" src="hooks/fix-ios-deployment-target.js" />
         <icon height="57" src="resources/ios/icon/icon.png" width="57" />
         <icon height="114" src="resources/ios/icon/icon@2x.png" width="114" />
         <icon height="29" src="resources/ios/icon/icon-small.png" width="29" />
