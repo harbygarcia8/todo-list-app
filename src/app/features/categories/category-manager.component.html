@@ -1,0 +1,83 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Categorías</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">Cerrar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  @if (facade.categories().length) {
+    <ion-list lines="full">
+      @for (cat of facade.categories(); track cat.id) {
+        <ion-item>
+          <span class="color-dot" slot="start" [style.background]="cat.color"></span>
+          <ion-label>{{ cat.name }}</ion-label>
+          <ion-button
+            fill="clear"
+            slot="end"
+            (click)="startEdit(cat.id, cat.name, cat.color)"
+            aria-label="Editar categoría"
+          >
+            <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+          </ion-button>
+          <ion-button
+            fill="clear"
+            color="danger"
+            slot="end"
+            (click)="confirmRemove(cat.id, cat.name)"
+            aria-label="Eliminar categoría"
+          >
+            <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+      }
+    </ion-list>
+  } @else {
+    <div class="empty-state">
+      <ion-icon name="pricetags-outline"></ion-icon>
+      <p>Aún no hay categorías. Crea la primera abajo.</p>
+    </div>
+  }
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <div class="form">
+      <ion-item lines="none">
+        <ion-input
+          [label]="editingId() ? 'Editar categoría' : 'Nueva categoría'"
+          labelPlacement="stacked"
+          placeholder="Nombre de la categoría"
+          [value]="name()"
+          (ionInput)="name.set($any($event.target).value)"
+          (keyup.enter)="submit()"
+        ></ion-input>
+      </ion-item>
+
+      <div class="swatches">
+        @for (c of palette; track c) {
+          <button
+            type="button"
+            class="swatch"
+            [class.selected]="color() === c"
+            [style.background]="c"
+            (click)="pickColor(c)"
+            [attr.aria-label]="'Color ' + c"
+          ></button>
+        }
+      </div>
+
+      <div class="actions">
+        @if (editingId()) {
+          <ion-button fill="clear" color="medium" (click)="cancelEdit()">Cancelar</ion-button>
+        }
+        <ion-button (click)="submit()" [disabled]="!name().trim()">
+          <ion-icon slot="start" [name]="editingId() ? 'checkmark-outline' : 'add-outline'"></ion-icon>
+          {{ editingId() ? 'Guardar' : 'Agregar' }}
+        </ion-button>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-footer>
