@@ -15,6 +15,8 @@ import { CreateCategoryUseCase } from '../../core/application/use-cases/category
 import { DeleteCategoryUseCase } from '../../core/application/use-cases/category/delete-category.use-case';
 import { EditCategoryUseCase } from '../../core/application/use-cases/category/edit-category.use-case';
 import { ListCategoriesUseCase } from '../../core/application/use-cases/category/list-categories.use-case';
+import { FeatureFlag } from '../../core/application/ports/feature-flag.provider';
+import { FEATURE_FLAG_PROVIDER } from '../../core/infrastructure/di/tokens';
 
 /** Valores especiales del filtro por categoría. */
 export const ALL_FILTER = 'all';
@@ -41,16 +43,21 @@ export class TasksFacade {
   private readonly editCategoryUC = inject(EditCategoryUseCase);
   private readonly deleteCategoryUC = inject(DeleteCategoryUseCase);
   private readonly listCategoriesUC = inject(ListCategoriesUseCase);
+  private readonly flags = inject(FEATURE_FLAG_PROVIDER);
 
   // Estado interno
   private readonly _tasks = signal<readonly Task[]>([]);
   private readonly _categories = signal<readonly Category[]>([]);
   private readonly _filter = signal<CategoryFilter>(ALL_FILTER);
   private readonly _loaded = signal(false);
+  private readonly _categoriesEnabled = signal(true);
 
   // Estado derivado (solo lectura)
   readonly loaded = this._loaded.asReadonly();
   readonly filter = this._filter.asReadonly();
+
+  /** Feature flag: ¿está activa la funcionalidad de categorías? (Remote Config) */
+  readonly categoriesEnabled = this._categoriesEnabled.asReadonly();
 
   /** Tareas ordenadas por fecha de creación (desc). */
   readonly tasks = computed(() =>
@@ -71,10 +78,13 @@ export class TasksFacade {
     return map;
   });
 
-  /** Tareas visibles según el filtro activo. */
+  /** Tareas visibles según el filtro activo (si el flag está off, se ven todas). */
   readonly filteredTasks = computed(() => {
-    const filter = this._filter();
     const tasks = this.tasks();
+    if (!this._categoriesEnabled()) {
+      return tasks;
+    }
+    const filter = this._filter();
     if (filter === ALL_FILTER) {
       return tasks;
     }
@@ -95,10 +105,17 @@ export class TasksFacade {
     void this.init();
   }
 
-  /** Carga inicial del estado desde el repositorio. */
+  /** Carga inicial del estado desde el repositorio + feature flags. */
   async init(): Promise<void> {
     await this.reloadAll();
+    this._categoriesEnabled.set(this.flags.isEnabled(FeatureFlag.CategoriesEnabled));
     this._loaded.set(true);
+  }
+
+  /** Vuelve a leer los feature flags desde Remote Config (para la demo en caliente). */
+  async refreshFlags(): Promise<void> {
+    await this.flags.refresh();
+    this._categoriesEnabled.set(this.flags.isEnabled(FeatureFlag.CategoriesEnabled));
   }
 
   // ── Acciones de tareas ────────────────────────────────────────────────────

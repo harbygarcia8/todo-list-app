@@ -50,6 +50,26 @@ ion-title {
   }
 }
 
+.flag-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--ion-color-warning-tint, #ffe9b0);
+  color: var(--ion-color-warning-contrast, #4d3b00);
+
+  ion-icon {
+    font-size: 22px;
+    flex: 0 0 auto;
+  }
+
+  code {
+    font-size: 0.85em;
+  }
+}
+
 .empty-state {
   display: flex;
   flex-direction: column;

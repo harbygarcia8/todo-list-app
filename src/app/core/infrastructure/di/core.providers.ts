@@ -1,13 +1,20 @@
 import { Provider, inject } from '@angular/core';
 
 // Puertos (tokens)
-import { CATEGORY_REPOSITORY, CLOCK, ID_GENERATOR, TASK_REPOSITORY } from './tokens';
+import {
+  CATEGORY_REPOSITORY,
+  CLOCK,
+  FEATURE_FLAG_PROVIDER,
+  ID_GENERATOR,
+  TASK_REPOSITORY,
+} from './tokens';
 
 // Adaptadores (implementaciones)
 import { IonicStorageCategoryRepository } from '../persistence/ionic-storage-category.repository';
 import { IonicStorageTaskRepository } from '../persistence/ionic-storage-task.repository';
 import { CryptoIdGenerator } from '../system/crypto-id-generator';
 import { SystemClock } from '../system/system-clock';
+import { FirebaseRemoteConfigProvider } from '../feature-flags/firebase-remote-config.provider';
 
 // Casos de uso (tareas)
 import { AddTaskUseCase } from '../../application/use-cases/task/add-task.use-case';
@@ -34,6 +41,7 @@ export const coreProviders: Provider[] = [
   { provide: CATEGORY_REPOSITORY, useExisting: IonicStorageCategoryRepository },
   { provide: ID_GENERATOR, useExisting: CryptoIdGenerator },
   { provide: CLOCK, useExisting: SystemClock },
+  { provide: FEATURE_FLAG_PROVIDER, useExisting: FirebaseRemoteConfigProvider },
 
   // Casos de uso — tareas
   {

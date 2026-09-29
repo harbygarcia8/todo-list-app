@@ -1,6 +1,7 @@
 import { InjectionToken } from '@angular/core';
 import { Clock } from '../../application/ports/clock.port';
 import { CategoryRepository } from '../../application/ports/category-repository.port';
+import { FeatureFlagProvider } from '../../application/ports/feature-flag.provider';
 import { IdGenerator } from '../../application/ports/id-generator.port';
 import { TaskRepository } from '../../application/ports/task-repository.port';
 
@@ -15,3 +16,4 @@ export const TASK_REPOSITORY = new InjectionToken<TaskRepository>('TaskRepositor
 export const CATEGORY_REPOSITORY = new InjectionToken<CategoryRepository>('CategoryRepository');
 export const ID_GENERATOR = new InjectionToken<IdGenerator>('IdGenerator');
 export const CLOCK = new InjectionToken<Clock>('Clock');
+export const FEATURE_FLAG_PROVIDER = new InjectionToken<FeatureFlagProvider>('FeatureFlagProvider');

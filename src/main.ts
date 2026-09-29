@@ -6,6 +6,7 @@ import {
   checkmarkDoneOutline,
   checkmarkOutline,
   createOutline,
+  flagOutline,
   pricetagOutline,
   pricetagsOutline,
   trashOutline,
@@ -24,6 +25,7 @@ addIcons({
   'pricetags-outline': pricetagsOutline,
   'checkmark-outline': checkmarkOutline,
   'checkmark-done-outline': checkmarkDoneOutline,
+  'flag-outline': flagOutline,
 });
 
 bootstrapApplication(App, appConfig)

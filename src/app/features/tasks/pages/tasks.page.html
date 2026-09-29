@@ -17,9 +17,11 @@
       >
         <ion-icon slot="icon-only" name="checkmark-done-outline"></ion-icon>
       </ion-button>
-      <ion-button (click)="openCategoryManager()" aria-label="Gestionar categorías">
-        <ion-icon slot="icon-only" name="pricetags-outline"></ion-icon>
-      </ion-button>
+      @if (facade.categoriesEnabled()) {
+        <ion-button (click)="openCategoryManager()" aria-label="Gestionar categorías">
+          <ion-icon slot="icon-only" name="pricetags-outline"></ion-icon>
+        </ion-button>
+      }
     </ion-buttons>
   </ion-toolbar>
 
@@ -35,7 +37,7 @@
         aria-label="Nueva tarea"
       ></ion-input>
 
-      @if (facade.categories().length) {
+      @if (facade.categoriesEnabled() && facade.categories().length) {
         <ion-select
           class="composer-select"
           placeholder="Categoría"
@@ -57,7 +59,8 @@
     </div>
   </ion-toolbar>
 
-  <!-- Filtros por categoría -->
+  <!-- Filtros por categoría (solo si el feature flag está activo) -->
+  @if (facade.categoriesEnabled()) {
   <ion-toolbar>
     <div class="filters">
       <ion-chip [outline]="facade.filter() !== ALL" (click)="setFilter(ALL)">Todas</ion-chip>
@@ -79,9 +82,20 @@
       }
     </div>
   </ion-toolbar>
+  }
 </ion-header>
 
 <ion-content>
+  @if (!facade.categoriesEnabled()) {
+    <div class="flag-banner">
+      <ion-icon name="flag-outline"></ion-icon>
+      <ion-text>
+        Categorías desactivadas por <strong>Remote Config</strong>
+        (feature flag <code>categories_enabled = false</code>).
+      </ion-text>
+    </div>
+  }
+
   @if (facade.loaded() && facade.filteredTasks().length === 0) {
     <div class="empty-state">
       <ion-icon name="checkmark-done-outline"></ion-icon>
@@ -98,6 +112,7 @@
       <app-task-item
         [task]="task"
         [category]="categoryOf(task)"
+        [categoriesEnabled]="facade.categoriesEnabled()"
         (toggled)="facade.toggleTask(task.id)"
         (removed)="facade.deleteTask(task.id)"
         (editRequested)="editTask(task)"

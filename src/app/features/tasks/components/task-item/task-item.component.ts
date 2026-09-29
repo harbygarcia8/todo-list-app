@@ -38,6 +38,7 @@ import { Task } from '../../../../core/domain/task/task.entity';
 export class TaskItemComponent {
   readonly task = input.required<Task>();
   readonly category = input<Category | undefined>(undefined);
+  readonly categoriesEnabled = input<boolean>(true);
 
   readonly toggled = output<void>();
   readonly removed = output<void>();

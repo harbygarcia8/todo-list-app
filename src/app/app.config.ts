@@ -1,6 +1,8 @@
 import {
   ApplicationConfig,
   importProvidersFrom,
+  inject,
+  provideAppInitializer,
   provideBrowserGlobalErrorListeners,
   provideZoneChangeDetection,
 } from '@angular/core';
@@ -11,6 +13,7 @@ import { Drivers } from '@ionic/storage';
 
 import { routes } from './app.routes';
 import { coreProviders } from './core/infrastructure/di/core.providers';
+import { FEATURE_FLAG_PROVIDER } from './core/infrastructure/di/tokens';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -29,5 +32,8 @@ export const appConfig: ApplicationConfig = {
 
     // Núcleo hexagonal: puertos → adaptadores + casos de uso.
     ...coreProviders,
+
+    // Descarga los feature flags (Remote Config) antes de renderizar.
+    provideAppInitializer(() => inject(FEATURE_FLAG_PROVIDER).initialize()),
   ],
 };
