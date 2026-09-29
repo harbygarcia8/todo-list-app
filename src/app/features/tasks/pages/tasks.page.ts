@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import {
   ActionSheetController,
   AlertController,
@@ -22,6 +23,7 @@ import { Task } from '../../../core/domain/task/task.entity';
 import { CategoryManagerComponent } from '../../categories/category-manager.component';
 import { TaskItemComponent } from '../components/task-item/task-item.component';
 import { ALL_FILTER, CategoryFilter, TasksFacade, UNCATEGORIZED_FILTER } from '../tasks.facade';
+import { ThemeService } from '../../../shared/theme.service';
 
 /**
  * Pantalla principal (adaptador primario / container).
@@ -32,6 +34,7 @@ import { ALL_FILTER, CategoryFilter, TasksFacade, UNCATEGORIZED_FILTER } from '.
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    ScrollingModule,
     IonHeader,
     IonToolbar,
     IonTitle,
@@ -56,9 +59,16 @@ export class TasksPage {
   private readonly toastCtrl = inject(ToastController);
 
   protected readonly facade = inject(TasksFacade);
+  protected readonly theme = inject(ThemeService);
 
   protected readonly ALL = ALL_FILTER;
   protected readonly UNCATEGORIZED = UNCATEGORIZED_FILTER;
+
+  /** Altura fija por ítem para el virtual scroll (px). */
+  protected readonly itemSize = 76;
+
+  /** trackBy estable para el virtual scroll (evita recrear nodos del DOM). */
+  protected trackById = (_: number, task: Task): string => task.id;
 
   protected readonly newTitle = signal('');
   protected readonly newCategoryId = signal<CategoryId | null>(null);

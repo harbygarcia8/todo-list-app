@@ -2,6 +2,11 @@
   display: block;
 }
 
+/* Altura uniforme: el virtual scroll usa tamaño fijo (itemSize = 76px). */
+ion-item {
+  --min-height: 76px;
+}
+
 .task-done h2 {
   text-decoration: line-through;
   color: var(--ion-color-medium);

@@ -50,6 +50,18 @@ ion-title {
   }
 }
 
+/* El área de scroll de ion-content se vuelve columna flex: banner (auto) + viewport (resto) */
+ion-content::part(scroll) {
+  display: flex;
+  flex-direction: column;
+}
+
+.task-viewport {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+}
+
 .flag-banner {
   display: flex;
   align-items: center;

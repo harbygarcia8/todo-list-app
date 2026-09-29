@@ -7,8 +7,10 @@ import {
   checkmarkOutline,
   createOutline,
   flagOutline,
+  moonOutline,
   pricetagOutline,
   pricetagsOutline,
+  sunnyOutline,
   trashOutline,
 } from 'ionicons/icons';
 
@@ -26,6 +28,8 @@ addIcons({
   'checkmark-outline': checkmarkOutline,
   'checkmark-done-outline': checkmarkDoneOutline,
   'flag-outline': flagOutline,
+  'moon-outline': moonOutline,
+  'sunny-outline': sunnyOutline,
 });
 
 bootstrapApplication(App, appConfig)

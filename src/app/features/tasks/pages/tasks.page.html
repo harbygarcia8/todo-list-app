@@ -10,6 +10,9 @@
     </ion-title>
 
     <ion-buttons slot="end">
+      <ion-button (click)="theme.toggle()" [attr.aria-label]="theme.dark() ? 'Modo claro' : 'Modo oscuro'">
+        <ion-icon slot="icon-only" [name]="theme.dark() ? 'sunny-outline' : 'moon-outline'"></ion-icon>
+      </ion-button>
       <ion-button
         (click)="confirmClearCompleted()"
         [disabled]="facade.stats().completed === 0"
@@ -108,8 +111,9 @@
       }
     </div>
   } @else {
-    @for (task of facade.filteredTasks(); track task.id) {
+    <cdk-virtual-scroll-viewport [itemSize]="itemSize" class="task-viewport">
       <app-task-item
+        *cdkVirtualFor="let task of facade.filteredTasks(); trackBy: trackById"
         [task]="task"
         [category]="categoryOf(task)"
         [categoriesEnabled]="facade.categoriesEnabled()"
@@ -118,7 +122,7 @@
         (editRequested)="editTask(task)"
         (categoryRequested)="chooseCategory(task)"
       ></app-task-item>
-    }
+    </cdk-virtual-scroll-viewport>
   }
 </ion-content>
 
