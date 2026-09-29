@@ -1,11 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FirebaseApp, initializeApp } from 'firebase/app';
-import {
-  RemoteConfig,
-  fetchAndActivate,
-  getBoolean,
-  getRemoteConfig,
-} from 'firebase/remote-config';
+import type { RemoteConfig } from 'firebase/remote-config';
 import {
   FeatureFlag,
   FeatureFlagKey,
@@ -16,14 +10,18 @@ import { environment } from '../../../../environments/environment';
 /**
  * Adaptador de {@link FeatureFlagProvider} con Firebase Remote Config.
  *
+ * Optimización de carga inicial: el SDK de Firebase (~760 kB) se importa de
+ * forma DIFERIDA con `import()` dinámico dentro de `initialize()`, de modo que
+ * NO entra en el bundle inicial (queda en un chunk aparte que se descarga solo
+ * cuando hace falta). El resto de la app arranca ligera.
+ *
  * Es *fault-tolerant*: si Firebase no está configurado (sin `apiKey`) o la
- * descarga falla, la app sigue funcionando con los valores por defecto de
- * {@link environment.featureFlagDefaults}.
+ * descarga falla, se usan los valores por defecto de {@link environment}.
  */
 @Injectable({ providedIn: 'root' })
 export class FirebaseRemoteConfigProvider implements FeatureFlagProvider {
-  private app?: FirebaseApp;
   private remoteConfig?: RemoteConfig;
+  private rc?: typeof import('firebase/remote-config');
 
   /** Caché local de los valores de los flags. */
   private readonly values = new Map<string, boolean>();
@@ -43,13 +41,17 @@ export class FirebaseRemoteConfigProvider implements FeatureFlagProvider {
     }
 
     try {
-      this.app = initializeApp(environment.firebase);
-      this.remoteConfig = getRemoteConfig(this.app);
+      // Import diferido: estos módulos NO están en el bundle inicial.
+      const { initializeApp } = await import('firebase/app');
+      this.rc = await import('firebase/remote-config');
+
+      const app = initializeApp(environment.firebase);
+      this.remoteConfig = this.rc.getRemoteConfig(app);
       this.remoteConfig.settings.minimumFetchIntervalMillis =
         environment.remoteConfigMinimumFetchIntervalMillis;
       this.remoteConfig.defaultConfig = { ...environment.featureFlagDefaults };
 
-      await fetchAndActivate(this.remoteConfig);
+      await this.rc.fetchAndActivate(this.remoteConfig);
       this.remoteActive = true;
       this.sync();
     } catch (error) {
@@ -61,11 +63,11 @@ export class FirebaseRemoteConfigProvider implements FeatureFlagProvider {
   }
 
   async refresh(): Promise<void> {
-    if (!this.remoteConfig) {
+    if (!this.remoteConfig || !this.rc) {
       return;
     }
     try {
-      await fetchAndActivate(this.remoteConfig);
+      await this.rc.fetchAndActivate(this.remoteConfig);
       this.sync();
     } catch (error) {
       console.warn('[FirebaseRemoteConfigProvider] No se pudo refrescar.', error);
@@ -82,12 +84,12 @@ export class FirebaseRemoteConfigProvider implements FeatureFlagProvider {
   }
 
   private sync(): void {
-    if (!this.remoteConfig) {
+    if (!this.remoteConfig || !this.rc) {
       return;
     }
     this.values.set(
       FeatureFlag.CategoriesEnabled,
-      getBoolean(this.remoteConfig, FeatureFlag.CategoriesEnabled),
+      this.rc.getBoolean(this.remoteConfig, FeatureFlag.CategoriesEnabled),
     );
   }
 }

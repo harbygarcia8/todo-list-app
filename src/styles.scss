@@ -1,1 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
+
+/*
+ * Safe areas (notch / Dynamic Island / home indicator / gestos).
+ * No hace falta CSS extra: Ionic ya aplica los insets — el superior en
+ * `ion-header` (padding-top: var(--ion-safe-area-top)) y los laterales en
+ * `ion-toolbar` — a partir de env(safe-area-inset-*). Lo único que faltaba
+ * era `viewport-fit=cover` en el <meta viewport> (ver src/index.html) para
+ * que esos env() reporten valores reales dentro del WebView de Cordova.
+ */

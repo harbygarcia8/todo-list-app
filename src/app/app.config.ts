@@ -20,7 +20,10 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideIonicAngular({}),
+    // Forzamos el modo Material en todas las plataformas: header consistente
+    // (título alineado a la izquierda en iOS y Android) y sin solapes del
+    // título centrado con los botones de acción. Look unificado de marca.
+    provideIonicAngular({ mode: 'md' }),
 
     // Almacenamiento local (IndexedDB con respaldo en localStorage).
     importProvidersFrom(
