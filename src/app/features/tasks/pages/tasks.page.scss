@@ -1,11 +1,15 @@
-ion-title {
-  .subtitle {
-    display: block;
-    font-size: 0.72rem;
-    font-weight: 400;
-    opacity: 0.85;
-    margin-top: 2px;
-  }
+/* Barra slim con las métricas, debajo del título. */
+.stats-toolbar {
+  --min-height: 28px;
+  --padding-top: 0;
+  --padding-bottom: 4px;
+}
+
+.stats {
+  font-size: 0.78rem;
+  font-weight: 400;
+  opacity: 0.9;
+  padding-inline: 16px;
 }
 
 .composer {

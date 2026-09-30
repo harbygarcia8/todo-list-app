@@ -20,10 +20,10 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    // Forzamos el modo Material en todas las plataformas: header consistente
-    // (título alineado a la izquierda en iOS y Android) y sin solapes del
-    // título centrado con los botones de acción. Look unificado de marca.
-    provideIonicAngular({ mode: 'md' }),
+    // Sin forzar `mode`: Ionic detecta la plataforma y renderiza el look NATIVO
+    // de cada SO (iOS redondeado en iPhone, Material en Android). Así modales,
+    // alerts y action-sheets usan las convenciones de cada sistema.
+    provideIonicAngular(),
 
     // Almacenamiento local (IndexedDB con respaldo en localStorage).
     importProvidersFrom(

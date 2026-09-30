@@ -1,13 +1,6 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>
-      Mis tareas
-      @if (facade.loaded()) {
-        <span class="subtitle">
-          {{ facade.stats().pending }} pendientes · {{ facade.stats().completed }} completadas
-        </span>
-      }
-    </ion-title>
+    <ion-title>Mis tareas</ion-title>
 
     <ion-buttons slot="end">
       <ion-button (click)="theme.toggle()" [attr.aria-label]="theme.dark() ? 'Modo claro' : 'Modo oscuro'">
@@ -27,6 +20,16 @@
       }
     </ion-buttons>
   </ion-toolbar>
+
+  <!-- Stats en su propia barra: fuera del ion-title, el subtítulo centrado de
+       iOS ya no se solapa con los botones de acción. -->
+  @if (facade.loaded()) {
+    <ion-toolbar color="primary" class="stats-toolbar">
+      <div class="stats">
+        {{ facade.stats().pending }} pendientes · {{ facade.stats().completed }} completadas
+      </div>
+    </ion-toolbar>
+  }
 
   <!-- Composer: alta de tareas -->
   <ion-toolbar>
