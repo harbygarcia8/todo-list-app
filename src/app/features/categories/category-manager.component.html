@@ -8,6 +8,44 @@
 </ion-header>
 
 <ion-content class="ion-padding">
+  <!-- Formulario de alta/edición ARRIBA: el teclado (abajo) nunca lo tapa y el
+       input vive dentro de ion-content, así el scroll-assist de Ionic funciona. -->
+  <div class="form">
+    <ion-item lines="none">
+      <ion-input
+        [label]="editingId() ? 'Editar categoría' : 'Nueva categoría'"
+        labelPlacement="stacked"
+        placeholder="Nombre de la categoría"
+        [value]="name()"
+        (ionInput)="name.set($any($event.target).value)"
+        (keyup.enter)="submit()"
+      ></ion-input>
+    </ion-item>
+
+    <div class="swatches">
+      @for (c of palette; track c) {
+        <button
+          type="button"
+          class="swatch"
+          [class.selected]="color() === c"
+          [style.background]="c"
+          (click)="pickColor(c)"
+          [attr.aria-label]="'Color ' + c"
+        ></button>
+      }
+    </div>
+
+    <div class="actions">
+      @if (editingId()) {
+        <ion-button fill="clear" color="medium" (click)="cancelEdit()">Cancelar</ion-button>
+      }
+      <ion-button (click)="submit()" [disabled]="!name().trim()">
+        <ion-icon slot="start" [name]="editingId() ? 'checkmark-outline' : 'add-outline'"></ion-icon>
+        {{ editingId() ? 'Guardar' : 'Agregar' }}
+      </ion-button>
+    </div>
+  </div>
+
   @if (facade.categories().length) {
     <ion-list lines="full">
       @for (cat of facade.categories(); track cat.id) {
@@ -37,47 +75,7 @@
   } @else {
     <div class="empty-state">
       <ion-icon name="pricetags-outline"></ion-icon>
-      <p>Aún no hay categorías. Crea la primera abajo.</p>
+      <p>Aún no hay categorías. Crea la primera arriba.</p>
     </div>
   }
 </ion-content>
-
-<ion-footer>
-  <ion-toolbar>
-    <div class="form">
-      <ion-item lines="none">
-        <ion-input
-          [label]="editingId() ? 'Editar categoría' : 'Nueva categoría'"
-          labelPlacement="stacked"
-          placeholder="Nombre de la categoría"
-          [value]="name()"
-          (ionInput)="name.set($any($event.target).value)"
-          (keyup.enter)="submit()"
-        ></ion-input>
-      </ion-item>
-
-      <div class="swatches">
-        @for (c of palette; track c) {
-          <button
-            type="button"
-            class="swatch"
-            [class.selected]="color() === c"
-            [style.background]="c"
-            (click)="pickColor(c)"
-            [attr.aria-label]="'Color ' + c"
-          ></button>
-        }
-      </div>
-
-      <div class="actions">
-        @if (editingId()) {
-          <ion-button fill="clear" color="medium" (click)="cancelEdit()">Cancelar</ion-button>
-        }
-        <ion-button (click)="submit()" [disabled]="!name().trim()">
-          <ion-icon slot="start" [name]="editingId() ? 'checkmark-outline' : 'add-outline'"></ion-icon>
-          {{ editingId() ? 'Guardar' : 'Agregar' }}
-        </ion-button>
-      </div>
-    </div>
-  </ion-toolbar>
-</ion-footer>

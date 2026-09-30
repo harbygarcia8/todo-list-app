@@ -33,7 +33,7 @@
     <div class="composer">
       <ion-input
         class="composer-input"
-        placeholder="¿Qué necesitas hacer?"
+        placeholder="Agrega una nueva tarea"
         [value]="newTitle()"
         (ionInput)="newTitle.set($any($event.target).value)"
         (keyup.enter)="addTask()"

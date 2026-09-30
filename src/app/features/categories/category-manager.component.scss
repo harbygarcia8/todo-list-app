@@ -24,7 +24,9 @@
 
 .form {
   width: 100%;
-  padding: 8px 12px 4px;
+  padding: 4px 4px 12px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--ion-color-step-150, rgba(128, 128, 128, 0.2));
 }
 
 .swatches {
