@@ -18,7 +18,6 @@ import { appConfig } from './app/app.config';
 import { App } from './app/app';
 import { TasksFacade } from './app/features/tasks/tasks.facade';
 
-// Registro de iconos usados en la app (build standalone de Ionic).
 addIcons({
   'add-outline': addOutline,
   'create-outline': createOutline,
@@ -34,8 +33,6 @@ addIcons({
 
 bootstrapApplication(App, appConfig)
   .then((appRef) => {
-    // Hook de pruebas E2E, solo en desarrollo: permite a Puppeteer/Playwright
-    // sembrar datos deterministas a través del facade, sin depender de la UI.
     if (isDevMode()) {
       (globalThis as Record<string, unknown>)['__todo'] = {
         facade: appRef.injector.get(TasksFacade),

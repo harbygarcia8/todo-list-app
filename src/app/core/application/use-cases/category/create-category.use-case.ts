@@ -18,7 +18,6 @@ export interface CreateCategoryInput {
   color: string;
 }
 
-/** Crea y persiste una categoría nueva. Valida nombre y color. */
 export class CreateCategoryUseCase {
   constructor(
     private readonly categories: CategoryRepository,

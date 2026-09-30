@@ -4,7 +4,6 @@ import { TaskTitle } from '../../../domain/task/task-title.vo';
 import { TaskTitleError } from '../../../domain/task/task.errors';
 import { TaskRepository } from '../../ports/task-repository.port';
 
-/** Renombra una tarea. Falla si el nuevo título no es válido. */
 export class RenameTaskUseCase {
   constructor(private readonly tasks: TaskRepository) {}
 

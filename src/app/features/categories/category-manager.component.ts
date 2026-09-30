@@ -18,7 +18,6 @@ import {
 import { CategoryId } from '../../core/domain/category/category-id';
 import { TasksFacade } from '../tasks/tasks.facade';
 
-/** Paleta sugerida para asignar colores a las categorías. */
 const PALETTE = [
   '#eb445a',
   '#f0963f',
@@ -30,7 +29,6 @@ const PALETTE = [
   '#92949c',
 ];
 
-/** Modal para gestionar categorías: crear, editar y eliminar. */
 @Component({
   selector: 'app-category-manager',
   standalone: true,

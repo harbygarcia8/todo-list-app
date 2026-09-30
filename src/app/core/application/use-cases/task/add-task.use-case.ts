@@ -13,7 +13,6 @@ export interface AddTaskInput {
   categoryId?: CategoryId | null;
 }
 
-/** Crea y persiste una tarea nueva. Falla si el título no es válido. */
 export class AddTaskUseCase {
   constructor(
     private readonly tasks: TaskRepository,

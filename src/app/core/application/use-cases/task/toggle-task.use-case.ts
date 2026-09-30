@@ -1,7 +1,6 @@
 import { TaskId } from '../../../domain/task/task-id';
 import { TaskRepository } from '../../ports/task-repository.port';
 
-/** Alterna una tarea entre completada y pendiente. */
 export class ToggleTaskUseCase {
   constructor(private readonly tasks: TaskRepository) {}
 

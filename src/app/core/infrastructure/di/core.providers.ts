@@ -30,11 +30,7 @@ import { DeleteCategoryUseCase } from '../../application/use-cases/category/dele
 import { EditCategoryUseCase } from '../../application/use-cases/category/edit-category.use-case';
 import { ListCategoriesUseCase } from '../../application/use-cases/category/list-categories.use-case';
 
-/**
- * Composition root del núcleo hexagonal: enlaza puertos → adaptadores y provee
- * los casos de uso (clases planas) mediante factories que inyectan sus
- * dependencias. Es el único punto donde el dominio "se cablea" a Angular.
- */
+
 export const coreProviders: Provider[] = [
   // Puertos → adaptadores concretos
   { provide: TASK_REPOSITORY, useExisting: IonicStorageTaskRepository },

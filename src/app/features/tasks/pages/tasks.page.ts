@@ -63,11 +63,7 @@ export class TasksPage {
 
   protected readonly ALL = ALL_FILTER;
   protected readonly UNCATEGORIZED = UNCATEGORIZED_FILTER;
-
-  /** Altura fija por ítem para el virtual scroll (px). */
   protected readonly itemSize = 76;
-
-  /** trackBy estable para el virtual scroll (evita recrear nodos del DOM). */
   protected trackById = (_: number, task: Task): string => task.id;
 
   protected readonly newTitle = signal('');
@@ -84,8 +80,6 @@ export class TasksPage {
     return this.facade.categoryOf(task);
   }
 
-  // ── Alta ──────────────────────────────────────────────────────────────────
-
   protected async addTask(): Promise<void> {
     const title = this.newTitle();
     const result = await this.facade.addTask(title, this.newCategoryId());
@@ -96,13 +90,9 @@ export class TasksPage {
     }
   }
 
-  // ── Filtro ──────────────────────────────────────────────────────────────
-
   protected setFilter(filter: CategoryFilter): void {
     this.facade.setFilter(filter);
   }
-
-  // ── Interacciones por ítem ──────────────────────────────────────────────
 
   protected async editTask(task: Task): Promise<void> {
     const alert = await this.alertCtrl.create({

@@ -3,22 +3,13 @@ import { Injectable, signal } from '@angular/core';
 type ThemePreference = 'light' | 'dark' | 'system';
 const STORAGE_KEY = 'todo.theme';
 
-/**
- * Gestiona el tema claro/oscuro usando el theming de Ionic.
- *
- * Activa la paleta oscura de Ionic con la clase `.ion-palette-dark` en `<html>`
- * (import `dark.class.css`). Por defecto sigue al sistema operativo; el usuario
- * puede forzar claro/oscuro y la preferencia se guarda en localStorage.
- */
+
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
   private readonly media = window.matchMedia('(prefers-color-scheme: dark)');
   private readonly _dark = signal(false);
-
-  /** `true` si actualmente se muestra el tema oscuro. */
   readonly dark = this._dark.asReadonly();
 
-  /** Inicializa el tema al arrancar (preferencia guardada o sistema). */
   init(): void {
     this.apply(this.readPreference());
     // Si está en modo "system", reacciona a los cambios del SO.
@@ -29,7 +20,6 @@ export class ThemeService {
     });
   }
 
-  /** Alterna manualmente entre claro y oscuro (y guarda la preferencia). */
   toggle(): void {
     const next: ThemePreference = this._dark() ? 'light' : 'dark';
     this.write(next);

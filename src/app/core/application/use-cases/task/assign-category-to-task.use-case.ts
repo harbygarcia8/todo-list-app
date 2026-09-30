@@ -2,7 +2,6 @@ import { CategoryId } from '../../../domain/category/category-id';
 import { TaskId } from '../../../domain/task/task-id';
 import { TaskRepository } from '../../ports/task-repository.port';
 
-/** Asigna (o quita con `null`) la categoría de una tarea. */
 export class AssignCategoryToTaskUseCase {
   constructor(private readonly tasks: TaskRepository) {}
 

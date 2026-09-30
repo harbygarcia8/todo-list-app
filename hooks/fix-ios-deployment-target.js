@@ -1,16 +1,5 @@
 'use strict';
 
-/**
- * Hook de Cordova (after_prepare / after_platform_add) para iOS.
- *
- * cordova-ios 8 genera `platforms/ios/packages/cordova-ios-plugins/Package.swift`
- * con un deployment target antiguo (`iOS 11.0` / `macCatalyst 11.0`). Xcode 26
- * solo admite deployment targets >= 15.0 (rango soportado 15.0–27.0) y rechaza
- * cualquier valor por debajo.
- *
- * Este hook eleva ese mínimo a 15.0 de forma automática y reproducible, para
- * que `cordova build ios` funcione sin editar archivos generados a mano.
- */
 const fs = require('fs');
 const path = require('path');
 

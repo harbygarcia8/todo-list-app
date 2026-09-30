@@ -12,12 +12,6 @@ import {
 import { Category } from '../../../../core/domain/category/category.entity';
 import { Task } from '../../../../core/domain/task/task.entity';
 
-/**
- * Ítem de tarea (componente presentacional, sin estado ni dependencias del
- * núcleo). Recibe la tarea y su categoría como `input()` y notifica las
- * interacciones con `output()`. Con `OnPush` solo se re-renderiza al cambiar
- * sus entradas.
- */
 @Component({
   selector: 'app-task-item',
   standalone: true,

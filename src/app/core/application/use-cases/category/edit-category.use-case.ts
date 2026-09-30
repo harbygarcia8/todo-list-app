@@ -10,7 +10,6 @@ export interface EditCategoryInput {
   color?: string;
 }
 
-/** Edita nombre y/o color de una categoría existente (valida lo que cambie). */
 export class EditCategoryUseCase {
   constructor(private readonly categories: CategoryRepository) {}
 

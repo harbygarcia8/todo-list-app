@@ -1,10 +1,4 @@
-/**
- * Dobles de prueba (test doubles) reutilizables.
- *
- * Al ser la arquitectura hexagonal, testear los casos de uso NO necesita mocks
- * de framework: basta con implementaciones in-memory de los puertos + un reloj
- * y un generador de ids deterministas. Esto hace los tests rápidos y estables.
- */
+
 import { Task } from '../app/core/domain/task/task.entity';
 import { TaskId } from '../app/core/domain/task/task-id';
 import { Category } from '../app/core/domain/category/category.entity';
@@ -18,7 +12,6 @@ import {
   FeatureFlagProvider,
 } from '../app/core/application/ports/feature-flag.provider';
 
-/** Repositorio de tareas en memoria (preserva orden de inserción). */
 export class InMemoryTaskRepository implements TaskRepository {
   private readonly store = new Map<string, Task>();
 
@@ -45,7 +38,6 @@ export class InMemoryTaskRepository implements TaskRepository {
   }
 }
 
-/** Repositorio de categorías en memoria. */
 export class InMemoryCategoryRepository implements CategoryRepository {
   private readonly store = new Map<string, Category>();
 
@@ -72,7 +64,6 @@ export class InMemoryCategoryRepository implements CategoryRepository {
   }
 }
 
-/** Generador de ids determinista: entrega la secuencia dada, o `id-N` si se agota. */
 export class FixedIdGenerator implements IdGenerator {
   private index = 0;
 
@@ -85,7 +76,6 @@ export class FixedIdGenerator implements IdGenerator {
   }
 }
 
-/** Reloj fijo (controlable) para hacer deterministas los `createdAt`. */
 export class FixedClock implements Clock {
   constructor(private value = 1_000) {}
 
@@ -98,7 +88,6 @@ export class FixedClock implements Clock {
   }
 }
 
-/** Proveedor de feature flags configurable en memoria. */
 export class FakeFeatureFlagProvider implements FeatureFlagProvider {
   constructor(private readonly flags: Record<string, boolean> = {}) {}
 
