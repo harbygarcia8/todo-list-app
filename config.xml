@@ -49,6 +49,12 @@
         <allow-intent href="itms-apps:*" />
         <!-- Xcode 26 solo admite deployment target >= 15.0 (rango 15.0–27.0). -->
         <preference name="deployment-target" value="15.0" />
+        <!-- Teclado iOS: 'ionic' redimensiona SOLO <ion-app>, no todo el WKWebView.
+             El modo por defecto ('native') encoge el webview completo y, con
+             nuestro layout (scroll flex + virtual scroll + viewport-fit=cover),
+             colapsaba a pantalla en blanco al abrir el teclado. -->
+        <preference name="KeyboardResizeMode" value="ionic" />
+        <preference name="KeyboardResize" value="true" />
         <hook type="after_prepare" src="hooks/fix-ios-deployment-target.js" />
         <hook type="after_platform_add" src="hooks/fix-ios-deployment-target.js" />
         <icon height="57" src="resources/ios/icon/icon.png" width="57" />

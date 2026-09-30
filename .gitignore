@@ -46,3 +46,12 @@ Thumbs.db
 /www
 /platforms
 /plugins
+
+# Firma / secretos de release (NUNCA subir al repo)
+*.keystore
+*.jks
+*.p12
+*.mobileprovision
+build.json
+google-services.json
+GoogleService-Info.plist
