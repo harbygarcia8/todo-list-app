@@ -1,12 +1,3 @@
-/**
- * Tema de la app — To-Do List
- * -----------------------------------------------------
- * Tokens de marca, tipografía, fondos y variables propias.
- * El color de marca vive AQUÍ: cámbialo en un solo lugar y toda la app se actualiza.
- */
-
-/* Paleta oscura de Ionic (activada por la clase .ion-palette-dark en <html>).
-   Va primero por la regla CSS de @import; nuestros overrides de abajo la afinan. */
 @import "@ionic/angular/css/palettes/dark.class.css";
 
 :root {
@@ -39,10 +30,6 @@
   --app-shadow-float: 0 10px 28px rgba(14, 70, 52, 0.14);
 }
 
-/**
- * Tema oscuro: se activa con la clase .ion-palette-dark en <html>
- * (gestionada por ThemeService; import de la paleta dark de Ionic abajo).
- */
 .ion-palette-dark {
   --ion-background-color: #101017;
   --ion-background-color-rgb: 16, 16, 23;
