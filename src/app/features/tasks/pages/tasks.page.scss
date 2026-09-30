@@ -1,47 +1,90 @@
-/* Barra slim con las métricas, debajo del título. */
+/* ─────────── Header de marca ─────────── */
+ion-header ion-toolbar {
+  --border-width: 0;
+}
+
+ion-title {
+  font-family: var(--app-font-display);
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+
+/* Iconos de acción en texto de contraste (oscuro sobre el verde). */
+ion-header ion-buttons ion-button {
+  --color: var(--ion-color-primary-contrast);
+}
+
+/* Barra slim de métricas; redondea la parte inferior del bloque verde. */
 .stats-toolbar {
-  --min-height: 28px;
+  --min-height: 26px;
   --padding-top: 0;
-  --padding-bottom: 4px;
+  --padding-bottom: 2px;
 }
 
 .stats {
-  font-size: 0.78rem;
-  font-weight: 400;
-  opacity: 0.9;
+  font-size: 0.8rem;
+  font-weight: 500;
+  opacity: 0.92;
   padding-inline: 16px;
+}
+
+/* ─────────── Composer flotante ─────────── */
+/* El composer es una tarjeta blanca DENTRO del header verde: el verde lo
+   enmarca y se redondea por debajo, así no queda "flotando" a dos capas. */
+.composer-toolbar {
+  --background: var(--ion-color-primary);
+  --padding-top: 0;
+  --padding-bottom: 0;
+  border-bottom-left-radius: 26px;
+  border-bottom-right-radius: 26px;
+  overflow: hidden;
 }
 
 .composer {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 4px 12px;
+  margin: 2px 14px 16px;
+  padding: 6px 8px 6px 14px;
+  background: var(--app-surface);
+  border-radius: 14px;
+  box-shadow: 0 6px 16px rgba(6, 40, 28, 0.18);
 
   .composer-input {
     flex: 1 1 auto;
     min-width: 0;
-    --padding-start: 12px;
-    --background: var(--ion-color-light);
-    border-radius: 10px;
+    --background: transparent;
+    --padding-start: 4px;
   }
 
   .composer-select {
-    flex: 0 1 128px;
+    flex: 0 1 118px;
     --padding-start: 8px;
   }
 
   .composer-add {
     flex: 0 0 auto;
-    height: 40px;
+    width: 44px;
+    height: 44px;
+    --padding-start: 0;
+    --padding-end: 0;
+    --background: var(--ion-color-primary);
+    --color: var(--ion-color-primary-contrast);
+    --border-radius: 14px;
+    --box-shadow: none;
   }
+}
+
+/* ─────────── Filtros (píldoras) ─────────── */
+.filter-toolbar {
+  --background: transparent;
 }
 
 .filters {
   display: flex;
-  gap: 6px;
+  gap: 8px;
   overflow-x: auto;
-  padding: 4px 12px 8px;
+  padding: 14px 16px 6px;
   scrollbar-width: none;
 
   &::-webkit-scrollbar {
@@ -51,9 +94,31 @@
   ion-chip {
     flex: 0 0 auto;
     margin: 0;
+    min-height: 34px;
+    border-radius: 999px;
+    border: 1px solid var(--app-surface-border);
+    font-weight: 600;
+    font-size: 13px;
+    --background: var(--app-surface);
+    --color: var(--app-muted);
+
+    &.is-active {
+      --background: var(--ion-color-primary);
+      --color: var(--ion-color-primary-contrast);
+      border-color: transparent;
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      margin-inline-end: 6px;
+      display: inline-block;
+    }
   }
 }
 
+/* ─────────── Contenido / virtual scroll ─────────── */
 ion-content::part(scroll) {
   display: flex;
   flex-direction: column;
@@ -63,20 +128,23 @@ ion-content::part(scroll) {
   flex: 1 1 auto;
   min-height: 0;
   width: 100%;
+  padding-top: 6px;
 }
 
+/* ─────────── Banner del feature flag ─────────── */
 .flag-banner {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin: 12px;
+  gap: 10px;
+  margin: 14px 16px;
   padding: 12px 14px;
-  border-radius: 12px;
-  background: var(--ion-color-warning-tint, #ffe9b0);
-  color: var(--ion-color-warning-contrast, #4d3b00);
+  border-radius: 14px;
+  background: #fff3d6;
+  color: #6b4b00;
+  border: 1px solid #fce3a6;
 
   ion-icon {
-    font-size: 22px;
+    font-size: 20px;
     flex: 0 0 auto;
   }
 
@@ -85,6 +153,13 @@ ion-content::part(scroll) {
   }
 }
 
+.ion-palette-dark .flag-banner {
+  background: rgba(255, 201, 41, 0.12);
+  color: #ffd98a;
+  border-color: rgba(255, 201, 41, 0.25);
+}
+
+/* ─────────── Estado vacío ─────────── */
 .empty-state {
   display: flex;
   flex-direction: column;
@@ -92,22 +167,26 @@ ion-content::part(scroll) {
   justify-content: center;
   text-align: center;
   height: 70%;
-  color: var(--ion-color-medium);
+  color: var(--app-muted);
   padding: 24px;
 
   ion-icon {
-    font-size: 64px;
-    opacity: 0.4;
-    margin-bottom: 8px;
+    font-size: 46px;
+    color: var(--ion-color-primary);
+    opacity: 0.7;
+    margin-bottom: 12px;
   }
 
   h2 {
     margin: 0;
-    font-size: 1.1rem;
+    font-family: var(--app-font-display);
+    font-size: 1.15rem;
+    color: var(--ion-text-color);
   }
 
   p {
     margin: 6px 0 0;
     font-size: 0.9rem;
+    max-width: 260px;
   }
 }

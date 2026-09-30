@@ -1,3 +1,8 @@
+ion-title {
+  font-family: var(--app-font-display);
+  font-weight: 700;
+}
+
 .color-dot {
   width: 18px;
   height: 18px;
@@ -7,47 +12,42 @@
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
 }
 
-.empty-state {
-  text-align: center;
-  color: var(--ion-color-medium);
-  margin-top: 25%;
-
-  ion-icon {
-    font-size: 56px;
-    opacity: 0.5;
-  }
-
-  p {
-    margin-top: 8px;
-  }
-}
-
+/* Formulario de alta/edición como tarjeta. */
 .form {
-  width: 100%;
-  padding: 4px 4px 12px;
-  margin-bottom: 8px;
-  border-bottom: 1px solid var(--ion-color-step-150, rgba(128, 128, 128, 0.2));
+  background: var(--app-surface);
+  border-radius: var(--app-radius-lg);
+  box-shadow: var(--app-shadow-card);
+  padding: 8px 14px 14px;
+  margin-bottom: 14px;
+
+  ion-item {
+    --background: transparent;
+    --padding-start: 0;
+    --inner-padding-end: 0;
+  }
 }
 
 .swatches {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  padding: 10px 4px;
+  gap: 12px;
+  padding: 12px 2px 4px;
 }
 
 .swatch {
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
-  border: 2px solid transparent;
+  border: 0;
   cursor: pointer;
   padding: 0;
-  transition: transform 0.12s ease, border-color 0.12s ease;
+  outline: 3px solid transparent;
+  outline-offset: 2px;
+  transition: transform 0.12s ease, outline-color 0.12s ease;
 
   &.selected {
-    border-color: var(--ion-text-color, #000);
-    transform: scale(1.15);
+    outline-color: var(--ion-text-color);
+    transform: scale(1.12);
   }
 }
 
@@ -55,4 +55,34 @@
   display: flex;
   justify-content: flex-end;
   gap: 4px;
+}
+
+/* Lista de categorías como tarjetas. */
+ion-list {
+  background: transparent;
+}
+
+ion-list ion-item {
+  --background: var(--app-surface);
+  --border-width: 0;
+  --border-radius: 14px;
+  margin-bottom: 8px;
+  border-radius: 14px;
+  box-shadow: var(--app-shadow-card);
+}
+
+.empty-state {
+  text-align: center;
+  color: var(--app-muted);
+  margin-top: 22%;
+
+  ion-icon {
+    font-size: 56px;
+    color: var(--ion-color-primary);
+    opacity: 0.55;
+  }
+
+  p {
+    margin-top: 8px;
+  }
 }

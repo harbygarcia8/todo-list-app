@@ -9,12 +9,13 @@
 
     <ion-label [class.task-done]="task().completed">
       <h2>{{ task().title }}</h2>
-      @if (categoriesEnabled() && category(); as cat) {
-        <ion-badge class="category-badge" [style.--background]="cat.color">
-          {{ cat.name }}
-        </ion-badge>
-      }
     </ion-label>
+
+    @if (categoriesEnabled() && category(); as cat) {
+      <ion-badge slot="end" class="category-badge" [style.--background]="cat.color">
+        {{ cat.name }}
+      </ion-badge>
+    }
   </ion-item>
 
   <ion-item-options side="end">

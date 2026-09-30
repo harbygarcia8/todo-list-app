@@ -1,18 +1,52 @@
 :host {
   display: block;
+  padding: 6px 16px;
 }
 
 ion-item {
-  --min-height: 76px;
+  --background: var(--app-surface);
+  --border-width: 0;
+  --border-radius: var(--app-radius-card);
+  --min-height: 68px;
+  --padding-start: 14px;
+  --inner-padding-end: 12px;
+  border-radius: var(--app-radius-card);
+  box-shadow: var(--app-shadow-card);
+  overflow: hidden;
+}
+
+/* Checkbox redondeado con el verde de marca. */
+ion-checkbox {
+  --size: 24px;
+  --border-radius: 8px;
+  --border-width: 2px;
+  --border-color: #cbcad9;
+  --border-color-checked: var(--ion-color-primary);
+  --checkbox-background-checked: var(--ion-color-primary);
+  --checkmark-color: var(--ion-color-primary-contrast);
+  margin-inline-end: 6px;
+}
+
+.ion-palette-dark ion-checkbox {
+  --border-color: #3b3b48;
+}
+
+h2 {
+  font-size: 15px;
+  font-weight: 600;
 }
 
 .task-done h2 {
   text-decoration: line-through;
-  color: var(--ion-color-medium);
+  color: var(--app-muted);
 }
 
+/* Chip de categoría: píldora de color sólido con texto blanco. */
 .category-badge {
-  margin-top: 4px;
+  align-self: center;
   --color: #fff;
-  font-weight: 500;
+  border-radius: 999px;
+  padding: 5px 10px;
+  font-size: 11px;
+  font-weight: 700;
 }

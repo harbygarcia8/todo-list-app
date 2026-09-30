@@ -32,7 +32,7 @@
   }
 
   <!-- Composer: alta de tareas -->
-  <ion-toolbar>
+  <ion-toolbar class="composer-toolbar">
     <div class="composer">
       <ion-input
         class="composer-input"
@@ -67,23 +67,23 @@
 
   <!-- Filtros por categoría (solo si el feature flag está activo) -->
   @if (facade.categoriesEnabled()) {
-  <ion-toolbar>
+  <ion-toolbar class="filter-toolbar">
     <div class="filters">
-      <ion-chip [outline]="facade.filter() !== ALL" (click)="setFilter(ALL)">Todas</ion-chip>
+      <ion-chip [class.is-active]="facade.filter() === ALL" (click)="setFilter(ALL)">Todas</ion-chip>
       <ion-chip
-        [outline]="facade.filter() !== UNCATEGORIZED"
+        [class.is-active]="facade.filter() === UNCATEGORIZED"
         (click)="setFilter(UNCATEGORIZED)"
       >
         Sin categoría
       </ion-chip>
       @for (cat of facade.categories(); track cat.id) {
         <ion-chip
-          [outline]="facade.filter() !== cat.id"
+          [class.is-active]="facade.filter() === cat.id"
           [style.--background]="facade.filter() === cat.id ? cat.color : undefined"
           [style.--color]="facade.filter() === cat.id ? '#fff' : undefined"
           (click)="setFilter(cat.id)"
         >
-          {{ cat.name }}
+          <span class="dot" [style.background]="cat.color"></span>{{ cat.name }}
         </ion-chip>
       }
     </div>

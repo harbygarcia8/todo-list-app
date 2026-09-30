@@ -63,7 +63,7 @@ export class TasksPage {
 
   protected readonly ALL = ALL_FILTER;
   protected readonly UNCATEGORIZED = UNCATEGORIZED_FILTER;
-  protected readonly itemSize = 76;
+  protected readonly itemSize = 80;
   protected trackById = (_: number, task: Task): string => task.id;
 
   protected readonly newTitle = signal('');
