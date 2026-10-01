@@ -41,3 +41,17 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
+
+# Cordova / build híbrido
+/www
+/platforms
+/plugins
+
+# Firma / secretos de release (NUNCA subir al repo)
+*.keystore
+*.jks
+*.p12
+*.mobileprovision
+build.json
+google-services.json
+GoogleService-Info.plist
