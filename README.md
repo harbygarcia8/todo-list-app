@@ -38,6 +38,10 @@ Binarios de la app demo, publicados en el **[Release v1.0.0](https://github.com/
     <td align="center"><b>Gestor de categorías</b><br><img src="docs/screenshots/categorias.png" width="240" alt="Modal de gestión de categorías"></td>
     <td align="center"><b>Feature flag desactivado</b><br><img src="docs/screenshots/flag-off.png" width="240" alt="Banner del feature flag categories_enabled = false"></td>
   </tr>
+  <tr>
+    <td align="center"><b>Editar tareas</b><br><img src="docs/screenshots/editar-tarea.png" width="240" alt="Editar Tareas"></td>
+    <td align="center"><b>Eliminar tareas completadas</b><br><img src="docs/screenshots/eliminar-completadas.png" width="240" alt="Eliminar tareas completadas"></td>
+  </tr>
 </table>
 
 ---
