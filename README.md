@@ -276,5 +276,100 @@ src/app/
 | APK (Android) | `platforms/android/app/build/outputs/apk/debug/app-debug.apk` |
 | IPA (iOS) | `dist/todo-list.ipa` |
 
+---
+
+## 🧩 Cambios realizados
+
+Como no se entregó una base, construí la app completa y, sobre ella, desarrollé la
+**funcionalidad nueva** que pedía la prueba: las **categorías**. Todo el trabajo de
+esa feature se hizo en una rama aparte (`feature/categorias`) siguiendo GitFlow
+(`feature/categorias` → `develop` → `main`).
+
+**Base de la app**
+- CRUD de tareas: crear, completar, editar y eliminar, con persistencia local
+  (IndexedDB).
+- Modo claro/oscuro.
+
+**Funcionalidad nueva — categorías** (detrás del feature flag `categories_enabled`)
+- Crear, editar y eliminar categorías (nombre + color). Al borrar una categoría se
+  aplica una regla en **cascada**: las tareas que la tenían quedan sin categoría,
+  para no dejar referencias huérfanas.
+- Asignar una categoría a cada tarea y **filtrar** la lista por categoría.
+- Todo gobernado por el flag remoto: si está en `false`, la app oculta las
+  categorías y sigue funcionando como una lista de tareas simple.
+
+**Plataforma y entrega**
+- Compilación híbrida con **Cordova** a Android e iOS; **APK** e **IPA** generados.
+- **Firebase Remote Config** para el feature flag.
+- Rediseño visual (tokens de color, tipografía propia, modo adaptativo iOS/Material).
+- Suite de **tests unitarios** (86 tests, ~91% de cobertura).
+
+---
+
+## 💬 Respuestas a las preguntas de la prueba
+
+### ¿Cuáles fueron los principales desafíos al implementar las nuevas funcionalidades?
+
+Siendo honesto, la lógica de tareas y categorías no fue lo difícil: eso es un CRUD.
+Los retos reales estuvieron en la parte híbrida y de plataforma:
+
+- **Cordova sobre un Angular moderno.** La prueba pedía Cordova (no Capacitor), pero
+  el builder de Ionic para Cordova no es compatible con el nuevo compilador de
+  Angular (esbuild). Me tocó desacoplar el proceso: Angular genera el web
+  (`ng build`) y Cordova solo empaqueta (`cordova build`). No es el camino "feliz"
+  de la documentación, pero es el que funciona hoy.
+- **Xcode reciente.** Xcode 26 rechaza los *deployment targets* antiguos que genera
+  cordova-ios. Lo resolví con un hook que eleva el target a 15.0 de forma
+  automática, para no editar a mano archivos generados.
+- **El teclado tapando la pantalla en iOS.** Al abrir el teclado, el WebView se
+  redimensionaba entero y la pantalla se iba en blanco. El arreglo fue cambiar el
+  modo de redimensionado del teclado a `ionic` y mover el formulario de categorías
+  del *footer* al contenido, donde el scroll de Ionic sí lo respeta.
+- **El IPA con cuenta de Apple gratuita.** Descubrí que Apple no permite distribuir
+  un IPA sin cuenta de pago; terminé empaquetándolo manualmente desde el *archive*.
+  Me pareció importante entender la limitación para documentarla con honestidad en
+  vez de prometer algo que no se puede.
+
+Siento que el mayor desafío fue la **cadena de compilación híbrida**, no el dominio
+de negocio.
+
+### ¿Qué técnicas de optimización de rendimiento aplicaste y por qué?
+
+No optimicé por optimizar; cada decisión respondió a un problema concreto que vi:
+
+- **Carga diferida de Firebase.** El SDK pesa ~760 kB y solo lo uso para leer un
+  flag. Dejarlo en el arranque hacía que el bundle inicial se pasara del
+  presupuesto, así que lo cargo con `import()` dinámico: no entra en el bundle
+  inicial y la app arranca ligera. Además dejé *budgets* de producción
+  configurados para que el bundle no vuelva a crecer sin que me dé cuenta.
+- **Virtual scroll (CDK).** Una lista de tareas puede crecer, y renderizar un nodo
+  por tarea no escala. Con `cdk-virtual-scroll` el DOM solo mantiene los ítems
+  visibles (p. ej. 60 tareas → ~12 nodos en pantalla).
+- **Signals + OnPush + entidades inmutables.** El estado vive en Signals y los
+  componentes usan `OnPush`. Como las entidades son inmutables (cada cambio
+  devuelve una instancia nueva), Angular detecta el cambio por referencia y
+  re-renderiza solo lo necesario.
+
+La idea de optimiazaión es que la App arranque rápido y que la UI re-renderice sobre cambios en el uso de la aplicación.
+
+### ¿Cómo aseguraste la calidad y mantenibilidad del código?
+
+Para mí, mantenibilidad es poder volver en seis meses y cambiar algo sin romper
+todo. Lo abordé así:
+
+- **Arquitectura hexagonal.** El dominio y los casos de uso son TypeScript puro, sin
+  Angular ni Cordova. La infraestructura (IndexedDB, Firebase) son adaptadores
+  detrás de puertos (interfaces). Si mañana cambio IndexedDB por una API, solo toco
+  un adaptador; la lógica de negocio ni se entera.
+- **Errores como valores (`Result<T,E>`) y branded types.** En vez de lanzar
+  excepciones, las operaciones que pueden fallar devuelven un `Result` que el
+  compilador obliga a manejar. Y los IDs están "marcados", así no puedes pasar un
+  `CategoryId` donde va un `TaskId`. Son detalles, pero evitan errores comunes.
+- **Tests.** Escribí 86 tests (~91% de cobertura), me concentré en el dominio y los casos de uso, que es donde vive la lógica. La UI la probé de forma más ligera.
+- **Un solo lugar para el color.** El color de marca es un token en
+  `theme/variables.css`; cambiarlo actualiza toda la app. Detalles así hacen el
+  código fácil de mantener.
+
+---
 
 ## 👨🏾‍💻 Prueba Técnica hecha por: Harby García Grajales.
