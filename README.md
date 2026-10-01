@@ -5,10 +5,25 @@ flag remoto** (Firebase Remote Config). Construida con **Ionic + Angular** y
 compilada a Android e iOS con **Apache Cordova**, siguiendo una **arquitectura
 hexagonal**.
 
-> 🎥 **Demo del feature flag en acción:**
-> [Ver video (OneDrive)](https://uconet-my.sharepoint.com/:v:/g/personal/harby_garcia8016_uco_edu_co/IQBTYmug3G0JTr3AcD7QCdESAaLUsO-jvoFoVfFwNy2G3i8?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=XCe26l)
+> 🎥 **Demo del feature flag:**
+> [Ver video](https://uconet-my.sharepoint.com/:v:/g/personal/harby_garcia8016_uco_edu_co/IQBTYmug3G0JTr3AcD7QCdESAaLUsO-jvoFoVfFwNy2G3i8?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=XCe26l).
 > El video muestra cómo, al cambiar `categories_enabled` en Remote Config, la
 > funcionalidad de categorías aparece o desaparece en la app.
+
+---
+
+## 📥 Descargas (APK e IPA)
+
+Binarios de la app demo, publicados en el **[Release v1.0.0](https://github.com/harbygarcia8/todo-list-app/releases/tag/v1.0.0)**:
+
+| Plataforma | Archivo | Descarga directa |
+|---|---|---|
+| 🤖 Android | `app-debug.apk` | [Descargar APK](https://github.com/harbygarcia8/todo-list-app/releases/download/v1.0.0/app-debug.apk) |
+| 🍏 iOS | `todo-list.ipa` | [Descargar IPA](https://github.com/harbygarcia8/todo-list-app/releases/download/v1.0.0/todo-list.ipa) |
+
+> El **APK** se instala directamente en cualquier Android. El **IPA** (firmado con
+> cuenta Apple gratuita) instala en un iPhone registrado; para revisión sin
+> dispositivo, la vía recomendada es el **simulador de iOS** (ver más abajo).
 
 ---
 
