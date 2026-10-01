@@ -1,0 +1,136 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Mis tareas</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="theme.toggle()" [attr.aria-label]="theme.dark() ? 'Modo claro' : 'Modo oscuro'">
+        <ion-icon slot="icon-only" [name]="theme.dark() ? 'sunny-outline' : 'moon-outline'"></ion-icon>
+      </ion-button>
+      <ion-button
+        (click)="confirmClearCompleted()"
+        [disabled]="facade.stats().completed === 0"
+        aria-label="Eliminar completadas"
+      >
+        <ion-icon slot="icon-only" name="checkmark-done-outline"></ion-icon>
+      </ion-button>
+      @if (facade.categoriesEnabled()) {
+        <ion-button (click)="openCategoryManager()" aria-label="Gestionar categorías">
+          <ion-icon slot="icon-only" name="pricetags-outline"></ion-icon>
+        </ion-button>
+      }
+    </ion-buttons>
+  </ion-toolbar>
+
+  <!-- Stats en su propia barra: fuera del ion-title, el subtítulo centrado de
+       iOS ya no se solapa con los botones de acción. -->
+  @if (facade.loaded()) {
+    <ion-toolbar color="primary" class="stats-toolbar">
+      <div class="stats">
+        {{ facade.stats().pending }} pendientes · {{ facade.stats().completed }} completadas
+      </div>
+    </ion-toolbar>
+  }
+
+  <!-- Composer: alta de tareas -->
+  <ion-toolbar class="composer-toolbar">
+    <div class="composer">
+      <ion-input
+        class="composer-input"
+        placeholder="Nueva tarea"
+        [value]="newTitle()"
+        (ionInput)="newTitle.set($any($event.target).value)"
+        (keyup.enter)="addTask()"
+        aria-label="Nueva tarea"
+      ></ion-input>
+
+      @if (facade.categoriesEnabled() && facade.categories().length) {
+        <ion-select
+          class="composer-select"
+          placeholder="Categoría"
+          interface="popover"
+          [value]="newCategoryId()"
+          (ionChange)="newCategoryId.set($event.detail.value)"
+          aria-label="Categoría de la nueva tarea"
+        >
+          <ion-select-option [value]="null">Sin categoría</ion-select-option>
+          @for (cat of facade.categories(); track cat.id) {
+            <ion-select-option [value]="cat.id">{{ cat.name }}</ion-select-option>
+          }
+        </ion-select>
+      }
+
+      <ion-button class="composer-add" (click)="addTask()" aria-label="Agregar tarea">
+        <ion-icon slot="icon-only" name="add-outline"></ion-icon>
+      </ion-button>
+    </div>
+  </ion-toolbar>
+
+  <!-- Filtros por categoría (solo si el feature flag está activo) -->
+  @if (facade.categoriesEnabled()) {
+  <ion-toolbar class="filter-toolbar">
+    <div class="filters">
+      <ion-chip [class.is-active]="facade.filter() === ALL" (click)="setFilter(ALL)">Todas</ion-chip>
+      <ion-chip
+        [class.is-active]="facade.filter() === UNCATEGORIZED"
+        (click)="setFilter(UNCATEGORIZED)"
+      >
+        Sin categoría
+      </ion-chip>
+      @for (cat of facade.categories(); track cat.id) {
+        <ion-chip
+          [class.is-active]="facade.filter() === cat.id"
+          [style.--background]="facade.filter() === cat.id ? cat.color : undefined"
+          [style.--color]="facade.filter() === cat.id ? '#fff' : undefined"
+          (click)="setFilter(cat.id)"
+        >
+          <span class="dot" [style.background]="cat.color"></span>{{ cat.name }}
+        </ion-chip>
+      }
+    </div>
+  </ion-toolbar>
+  }
+</ion-header>
+
+<ion-content>
+  @if (!facade.categoriesEnabled()) {
+    <div class="flag-banner">
+      <ion-icon name="flag-outline"></ion-icon>
+      <ion-text>
+        Categorías desactivadas por <strong>Remote Config</strong>
+        (feature flag <code>categories_enabled = false</code>).
+      </ion-text>
+    </div>
+  }
+
+  @if (facade.loaded() && facade.filteredTasks().length === 0) {
+    <div class="empty-state">
+      <ion-icon name="checkmark-done-outline"></ion-icon>
+      @if (facade.stats().total === 0) {
+        <h2>Sin tareas todavía</h2>
+        <p>Agrega tu primera tarea desde el campo de arriba.</p>
+      } @else {
+        <h2>Nada en "{{ activeFilterLabel() }}"</h2>
+        <p>Prueba con otro filtro de categoría.</p>
+      }
+    </div>
+  } @else {
+    <cdk-virtual-scroll-viewport [itemSize]="itemSize" class="task-viewport">
+      <app-task-item
+        *cdkVirtualFor="let task of facade.filteredTasks(); trackBy: trackById"
+        [task]="task"
+        [category]="categoryOf(task)"
+        [categoriesEnabled]="facade.categoriesEnabled()"
+        (toggled)="facade.toggleTask(task.id)"
+        (removed)="facade.deleteTask(task.id)"
+        (editRequested)="editTask(task)"
+        (categoryRequested)="chooseCategory(task)"
+      ></app-task-item>
+    </cdk-virtual-scroll-viewport>
+  }
+</ion-content>
+
+@if (!facade.loaded()) {
+  <ion-content class="ion-padding">
+    <ion-text color="medium">Cargando…</ion-text>
+  </ion-content>
+}
