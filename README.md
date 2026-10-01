@@ -27,6 +27,21 @@ Binarios de la app demo, publicados en el **[Release v1.0.0](https://github.com/
 
 ---
 
+## 📸 Capturas
+
+<table>
+  <tr>
+    <td align="center"><b>Tareas · claro</b><br><img src="docs/screenshots/tareas-claro.png" width="240" alt="Lista de tareas en modo claro"></td>
+    <td align="center"><b>Tareas · oscuro</b><br><img src="docs/screenshots/tareas-oscuro.png" width="240" alt="Lista de tareas en modo oscuro"></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Gestor de categorías</b><br><img src="docs/screenshots/categorias.png" width="240" alt="Modal de gestión de categorías"></td>
+    <td align="center"><b>Feature flag desactivado</b><br><img src="docs/screenshots/flag-off.png" width="240" alt="Banner del feature flag categories_enabled = false"></td>
+  </tr>
+</table>
+
+---
+
 ## 🧱 Stack
 
 | Capa | Tecnología |
